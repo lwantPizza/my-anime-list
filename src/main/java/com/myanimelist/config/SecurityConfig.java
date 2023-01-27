@@ -19,11 +19,11 @@ public class SecurityConfig {
 	@Lazy
 	@Autowired
 	private UserService userService;
-	
+
 	@Lazy
 	@Autowired
-    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
-	
+	private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -36,7 +36,7 @@ public class SecurityConfig {
 		auth.setPasswordEncoder(passwordEncoder());
 		return auth;
 	}
-	
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http

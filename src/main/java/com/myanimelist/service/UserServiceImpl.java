@@ -23,11 +23,11 @@ public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 
 	@Autowired
-	private RoleDao roleDao; 
-	
+	private RoleDao roleDao;
+
 	@Autowired
 	private MailSenderServiceImpl mailSenderService;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
@@ -41,44 +41,44 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public void save(ValidUser validUser) {
 		User user = new User();
-		
+
 		user.setUsername(validUser.getUsername());
 		user.setPassword(passwordEncoder.encode(validUser.getPassword()));
 		user.setEmail(validUser.getEmail());
 		user.setRoles(Arrays.asList(roleDao.findRole("ROLE_USER")));
 		user.setActivationCode(UUID.randomUUID().toString());
-		
+
 		userDao.save(user);
-		
-		String message = String.format(""
-				+ "Hello, %s! \n"
-				+ "Welcome to MyAnimeList. Please, follow link to verify your account: \n"
-				+ "http://localhost:8080/register/activate/%s",
-				user.getUsername(),
+
+		String message = String.format("" +
+				"Hello, %s! \n" + 
+				"Welcome to MyAnimeList. Please, follow link to verify your account: \n" +
+				"http://localhost:8080/register/activate/%s", 
+				user.getUsername(), 
 				user.getActivationCode());
-		
+
 		mailSenderService.send(user.getEmail(), "Activation code", message);
 	}
-	
+
 	@Override
 	@Transactional
 	public boolean activeteUser(String code) {
 		User user = userDao.findByActivationCode(code);
-		
+
 		if (user != null) {
 			user.setActivationCode(null);
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	@Override
 	@Transactional
 	public void uploadProfilePicture(byte[] bytes) {
 		userDao.uploadProfilePicture(bytes);
 	}
-	
+
 	@Override
 	@Transactional
 	public byte[] getProfilePicture() {
@@ -88,11 +88,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userDao.findByUsername(username);
-		
+
 		if (user == null) {
 			throw new UsernameNotFoundException(username);
 		}
-		
+
 		return new UserPrincipal(user);
 	}
 }
