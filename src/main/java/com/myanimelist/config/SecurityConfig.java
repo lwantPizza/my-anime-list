@@ -43,7 +43,7 @@ public class SecurityConfig {
 			.userDetailsService(userService)
 			
 			.authorizeRequests()
-				.antMatchers("/home**").hasRole("USER")
+				.antMatchers("/home").hasRole("USER")
 				.antMatchers("/anime/**").hasRole("USER")
 				.antMatchers("/list/**").hasRole("USER")
 				.antMatchers("/reviews/**").hasRole("USER")

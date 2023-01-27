@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,6 +31,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private Environment env;
 
 	@Override
 	@Transactional
@@ -53,7 +57,8 @@ public class UserServiceImpl implements UserService {
 		String message = String.format("" +
 				"Hello, %s! \n" + 
 				"Welcome to MyAnimeList. Please, follow link to verify your account: \n" +
-				"http://localhost:8080/register/activate/%s", 
+				"%s/register/activate/%s",
+				env.getProperty("host.domain"),
 				user.getUsername(), 
 				user.getActivationCode());
 
