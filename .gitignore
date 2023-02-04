@@ -1,2 +1,12 @@
-/target/
+target/
+
+.settings
+.classpath
+.DS_Store
+.project
+
+mvnw
+mvnw.cmd
+
+### Email login/password ###
 env.properties
