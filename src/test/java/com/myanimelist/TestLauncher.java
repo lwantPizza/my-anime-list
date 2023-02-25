@@ -11,21 +11,21 @@ import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
 
 public class TestLauncher {
 
-    public static void main(String[] args) {
-        Launcher launcher = LauncherFactory.create();
+	public static void main(String[] args) {
+		Launcher launcher = LauncherFactory.create();
 
-        SummaryGeneratingListener summaryGeneratingListener = new SummaryGeneratingListener();
-        launcher.registerTestExecutionListeners(summaryGeneratingListener);
+		SummaryGeneratingListener summaryGeneratingListener = new SummaryGeneratingListener();
+		launcher.registerTestExecutionListeners(summaryGeneratingListener);
 
-        LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder
-                .request()
-                .selectors(DiscoverySelectors.selectPackage("com.myanimelist"))
-                .build();
+		LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder
+				.request()
+				.selectors(DiscoverySelectors.selectPackage("com.myanimelist"))
+				.build();
 
-        launcher.execute(request);
+		launcher.execute(request);
 
-        try (PrintWriter printWriter = new PrintWriter(System.out)) {
-            summaryGeneratingListener.getSummary().printTo(printWriter);
-        }
-    }
+		try (PrintWriter printWriter = new PrintWriter(System.out)) {
+			summaryGeneratingListener.getSummary().printTo(printWriter);
+		}
+	}
 }
