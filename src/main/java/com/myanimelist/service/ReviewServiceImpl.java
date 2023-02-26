@@ -10,7 +10,6 @@ import com.myanimelist.authentication.AuthenticationFacade;
 import com.myanimelist.entity.Review;
 import com.myanimelist.exception.UserHasNoAccessException;
 import com.myanimelist.repository.ReviewRepository;
-import com.myanimelist.repository.UserRepository;
 import com.myanimelist.validation.entity.ValidReview;
 
 @Service
@@ -19,14 +18,14 @@ public class ReviewServiceImpl implements ReviewService {
 
 	private final ReviewRepository reviewRepository;
 	
-	private final UserRepository userRepository;
+	private final UserService userService;
 	
 	private final AuthenticationFacade authenticationFacade;
 
 	@Autowired
-	public ReviewServiceImpl(ReviewRepository reviewRepository, UserRepository userRepository, AuthenticationFacade authenticationFacade) {
+	public ReviewServiceImpl(ReviewRepository reviewRepository, UserService userService, AuthenticationFacade authenticationFacade) {
 		this.reviewRepository = reviewRepository;
-		this.userRepository = userRepository;
+		this.userService = userService;
 		this.authenticationFacade = authenticationFacade;
 	}
 
@@ -41,7 +40,7 @@ public class ReviewServiceImpl implements ReviewService {
 		
 		review.setAnimeId(reviewForm.getAnimeId());
 		review.setContent(reviewForm.getContent());
-		review.setUser(userRepository.findByUsername(authenticationFacade.getUsername()));
+		review.setUser(userService.find(authenticationFacade.getUsername()));
 		
 		reviewRepository.save(review);
 	}
