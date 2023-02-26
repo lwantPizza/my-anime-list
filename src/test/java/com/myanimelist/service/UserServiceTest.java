@@ -83,10 +83,7 @@ public class UserServiceTest {
 
 	@Test
 	void saveSuccess() {
-		ValidUser validUser = new ValidUser();
-		validUser.setUsername(user.getUsername());
-		validUser.setPassword(user.getPassword());
-		validUser.setEmail(user.getEmail());
+		ValidUser validUser = getValidUser();
 
 		when(roleRepository.findByName("ROLE_USER")).thenReturn(Optional.of(getRole()));
 		when(passwordEncoder.encode(user.getPassword())).thenReturn(user.getPassword() + "_encoded");
@@ -99,10 +96,7 @@ public class UserServiceTest {
 
 	@Test
 	void saveFail() {
-		ValidUser validUser = new ValidUser();
-		validUser.setUsername(user.getUsername());
-		validUser.setPassword(user.getPassword());
-		validUser.setEmail(user.getEmail());
+		ValidUser validUser = getValidUser();
 
 		when(roleRepository.findByName("ROLE_USER")).thenReturn(Optional.of(getRole()));
 		when(userRepository.save(any(User.class))).thenThrow(new RuntimeException("Username already exists"));
@@ -182,6 +176,14 @@ public class UserServiceTest {
 		SecurityContext securityContext = mock(SecurityContext.class);
 		when(securityContext.getAuthentication()).thenReturn(authentication);
 		SecurityContextHolder.setContext(securityContext);
+	}
+	
+	private ValidUser getValidUser() {
+		ValidUser validUser = new ValidUser();
+		validUser.setUsername(user.getUsername());
+		validUser.setPassword(user.getPassword());
+		validUser.setEmail(user.getEmail());
+		return validUser;
 	}
 
 	private User getUser() {
