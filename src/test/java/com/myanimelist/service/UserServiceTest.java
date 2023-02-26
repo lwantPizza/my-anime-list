@@ -186,7 +186,7 @@ public class UserServiceTest {
 		return validUser;
 	}
 
-	private User getUser() {
+	public User getUser() {
 		User user = new User();
 		user.setId(1);
 		user.setUsername("dummy");
